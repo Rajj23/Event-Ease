@@ -81,7 +81,7 @@ const HomePage = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 style={{ color: '#fff9c4' }}>Your Event, Our Plan</h1>
+          <h1 style={{ color: '#fff9c4' }}>Your Event, Our Ease</h1>
           <p>From birthdays to conferences, create unforgettable moments.</p>
           <Button as={Link} to="/create" variant="primary" size="lg">
             Start Planning
