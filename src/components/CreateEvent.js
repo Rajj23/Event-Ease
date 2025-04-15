@@ -190,7 +190,7 @@ const CreateEvent = () => {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                placeholder="E.g., Mumbai, Delhi"
+                placeholder="Punjab Only"
               />
             </Form.Group>
             <Form.Group className="mb-3">
