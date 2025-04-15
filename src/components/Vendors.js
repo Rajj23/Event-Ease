@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { EventContext } from '../EventContext';
-import { Card, Row, Col, Container, Form } from 'react-bootstrap';
+import { Card, Row, Col, Form } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import './Vendors.css';
 

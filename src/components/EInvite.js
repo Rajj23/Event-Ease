@@ -13,7 +13,7 @@ const EInvite = () => {
     message: '',
     imageUrl: '',
   });
-  const [preview, setPreview] = useState(null);
+  const [ setPreview] = useState(null);
 
   // const templates = [
   //   { id: 'classic', name: 'Classic', image: 'https://placehold.co/400x600?text=Classic+Invite' },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { inspirationEvents } from '../inspirationEvents';
-import { Card, Row, Col, Container, Form, Button } from 'react-bootstrap';
+import { Card, Row, Col, Form, Button } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import './Inspiration.css';
 
