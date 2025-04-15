@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import { inspirationEvents } from '../inspirationEvents';
 import './HomePage.css';
 
+
+
 const HomePage = () => {
   const { events, vendors } = useContext(EventContext);
   const [filterType, setFilterType] = useState('');
@@ -62,21 +64,29 @@ const HomePage = () => {
     ? events.filter((event) => event.eventType === filterType)
     : events;
 
-  return (
-    <div className="homepage">
-      {/* Hero Section */}
-      <motion.section
-        className="hero-section text-center"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1>Plan Any Event, Your Way</h1>
-        <p>From birthdays to conferences, create unforgettable moments.</p>
-        <Button as={Link} to="/create" variant="primary" size="lg">
-          Start Planning
-        </Button>
-      </motion.section>
+    const bgUrl = `${process.env.PUBLIC_URL}/assets/background.png`;
+
+    return (
+      <div className="homepage">
+        {/* Hero Section */}
+        <motion.section
+          className="hero-section text-center"
+          style={{
+            backgroundImage: `url(${bgUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 style={{ color: '#fff9c4' }}>Your Event, Our Plan</h1>
+          <p>From birthdays to conferences, create unforgettable moments.</p>
+          <Button as={Link} to="/create" variant="primary" size="lg">
+            Start Planning
+          </Button>
+        </motion.section>
 
       {/* Featured Carousel */}
       <motion.section
@@ -336,12 +346,58 @@ const HomePage = () => {
                     Explore
                   </Button>
                 </Card.Body>
+
               </Card>
             </Col>
           </Row>
         </Container>
-      </motion.section>
+      </motion.section> 
+      {/* Footer Section */}
+      <footer className="mt-5" style={{ backgroundColor: '#fce4ec', padding: '40px 20px' }}>
+        <Container>
+          
+          <Row>
+            <Col md={4}>
+              <h5>EventEase - Your Personal Event Planner</h5>
+              <p>Plan your event with us</p>
+              <p>
+                EventEase is your go-to event planning website where you can find top vendors and
+                tools for every type of celebration. Whether it's a wedding or a birthday bash, we’ve got you!
+              </p>
+            </Col>
+            <Col md={3}>
+              <h5>Contact Us</h5>
+              <p><strong>For Vendors:</strong><br /> vendors@eventease.com<br /> 0124-6812346</p>
+              <p><strong>For Users:</strong><br /> info@eventease.com<br /> 0124-6812345</p>
+            </Col>
+            <Col md={2}>
+              <h5>Follow Us</h5>
+              <p><a href="https://www.facebook.com/" style={{ color: '#c2185b' }}>Facebook</a></p>
+              <p><a href="https://www.instagram.com/" style={{ color: '#c2185b' }}>Instagram</a></p>
+              <p><a href="https://www.pinterest.com/" style={{ color: '#c2185b' }}>Pinterest</a></p>
+              <p><a href="https://x.com/" style={{ color: '#c2185b' }}>X</a></p>
+            </Col>
+            <Col md={4} className="mb-4">
+              <Card size="sm" className="text-center">
+                {/* <Card.Body> */}
+                  <Button as={Link} to="/register-vendor" variant="primary">
+                  Register as Vendor
+                  </Button>
+                {/* </Card.Body> */}
+              </Card>
+            </Col>
+            <Col md={3}>
+              <h5>Get Our App</h5>
+              <img src="/assets/app.png" alt="App Store" style={{ width: '140px', marginBottom: '10px' }} />
+              <img src="/assets/play.png" alt="Google Play" style={{ width: '140px' , marginBottom: '10px'}} />
+            </Col>
+          </Row>
+          <hr />
+          <p className="text-center mt-3">© {new Date().getFullYear()} EventEase. All rights reserved.</p>
+        </Container>
+      </footer>
     </div>
+    
   );
 };
 

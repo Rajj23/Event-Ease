@@ -12,11 +12,13 @@ import Dashboard from './components/Dashboard';
 import EditEvent from './components/EditEvent';
 import EventDetails from './components/EventDetails';
 import Checklist from './components/Checklist';
+import VendorRegister from './components/VendorRegister';
 import EInvite from './components/EInvite';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { Link } from 'react-router-dom';
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
               <Route path="/event/:id" element={<EventDetails />} />
               <Route path="/checklist" element={<Checklist />} />
               <Route path="/einvite" element={<EInvite />} />
+              <Route path="/register-vendor" element={<VendorRegister />} />
             </Routes>
           </main>
           <ToastContainer position="top-right" autoClose={3000} />

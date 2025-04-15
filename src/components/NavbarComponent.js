@@ -4,6 +4,8 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import './NavbarComponent.css';
 
+
+
 const NavbarComponent = () => {
   const navVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -21,7 +23,7 @@ const NavbarComponent = () => {
           <Navbar.Brand as={NavLink} to="/">
             {/* Logo Image */}
             <img
-              src="/assets/logo.jpg" // Path to your logo
+              src="/assets/logo.jpeg" // Path to your logo
               alt="Event Ease Logo"
               style={{ height: '45px', marginRight: '15px' }} // Adjust size and margin as needed
             />
