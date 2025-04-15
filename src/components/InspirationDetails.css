@@ -1,0 +1,13 @@
+.inspiration-details h2 {
+    font-family: 'Lora', serif;
+    color: var(--secondary);
+  }
+  
+  .inspiration-details .card {
+    border-radius: 12px;
+  }
+  
+  .inspiration-details .carousel {
+    border-radius: 12px;
+    overflow: hidden;
+  }

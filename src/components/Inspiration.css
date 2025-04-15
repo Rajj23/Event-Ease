@@ -1,0 +1,9 @@
+.inspiration h2 {
+    font-family: 'Lora', serif;
+    color: var(--secondary);
+  }
+  
+  .inspiration .card {
+    border-radius: 12px;
+    overflow: hidden;
+  }

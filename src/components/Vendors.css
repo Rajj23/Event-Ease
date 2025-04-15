@@ -1,0 +1,13 @@
+.vendors h2 {
+    font-family: 'Lora', serif;
+    color: var(--secondary);
+  }
+  
+  .vendors .card {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .vendors .form-select {
+    border-radius: 8px;
+  }

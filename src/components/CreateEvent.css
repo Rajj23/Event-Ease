@@ -1,0 +1,15 @@
+.create-event {
+  background-color: var(--accent); /* Soft purple for create event section */
+}
+
+.create-event h2,
+.create-event h4 {
+  font-family: 'Lora', serif;
+  color: var(--secondary); /* Rich purple for headings */
+}
+
+.vendor-list .card {
+  border-radius: 8px;
+  background-color: var(--background); /* Light pink background for cards */
+  border: 1px solid var(--accent); /* Soft purple border for cards */
+}

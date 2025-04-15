@@ -1,0 +1,23 @@
+:root {
+  --background: #f8f0f6; /* Soft light pink */
+  --accent: #d1a1d5; /* Soft purple */
+  --secondary: #9b4d96; /* Rich purple for headings */
+  --white: #ffffff; /* White */
+}
+
+.checklist {
+  background-color: var(--background); /* Light pink background */
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.checklist h2 {
+  font-family: 'Lora', serif;
+  color: var(--secondary); /* Purple for heading */
+}
+
+.list-group-item {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background-color: var(--accent); /* Soft purple for list items */
+}

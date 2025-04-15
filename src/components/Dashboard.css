@@ -1,0 +1,13 @@
+.dashboard h2 {
+  font-family: 'Lora', serif;
+  color: var(--secondary);
+}
+
+.dashboard .card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dashboard .btn {
+  border-radius: 8px;
+}

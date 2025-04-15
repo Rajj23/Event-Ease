@@ -7,7 +7,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.jumbotron {
+  margin-bottom: 0;
+  background-color: #f8f9fa;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.btn-primary {
+  background-color: #ff6f61;
+  border-color: #ff6f61;
+}
+
+.btn-primary:hover {
+  background-color: #e65b50;
+  border-color: #e65b50;
 }

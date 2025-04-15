@@ -1,0 +1,13 @@
+.edit-event h2 {
+  font-family: 'Lora', serif;
+  color: var(--secondary);
+}
+
+.edit-event .card {
+  border-radius: 8px;
+}
+
+.edit-event .form-control,
+.edit-event .form-select {
+  border-radius: 8px;
+}

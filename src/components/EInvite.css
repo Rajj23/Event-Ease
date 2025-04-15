@@ -1,0 +1,16 @@
+.einvite {
+    background-color: var(--accent);
+  }
+  
+  .einvite h2,
+  .einvite h4 {
+    font-family: 'Lora', serif;
+    color: var(--secondary);
+  }
+  
+  .invite-preview {
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+  }

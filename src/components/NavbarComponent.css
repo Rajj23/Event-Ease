@@ -1,0 +1,33 @@
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+  }
+  
+  .nav-link {
+    font-size: 1.1rem;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    color: #ffffff !important; /* White for active/hover */
+    border-bottom: 2px solid #ffffff; /* Subtle underline */
+  }
+  
+  @media (max-width: 991px) {
+    .nav-link {
+      margin-left: 0;
+      padding: 10px 15px;
+    }
+  
+    .nav-link:hover,
+    .nav-link.active {
+      border-bottom: none; /* Remove underline on mobile */
+      background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
+    }
+  }

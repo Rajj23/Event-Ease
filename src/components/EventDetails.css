@@ -1,0 +1,10 @@
+.event-details h2,
+.event-details h4 {
+  font-family: 'Lora', serif;
+  color: var(--secondary);
+}
+
+.event-details .card {
+  border-radius: 12px;
+  overflow: hidden;
+}
