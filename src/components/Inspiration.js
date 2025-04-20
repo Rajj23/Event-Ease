@@ -18,6 +18,20 @@ const Inspiration = () => {
     return matchesType && matchesStyle;
   });
 
+  // Add custom card styles to ensure fixed height
+  const cardStyle = {
+    height: '400px', // Fixed height for all cards
+    display: 'flex',
+    flexDirection: 'column'
+  };
+
+  const cardBodyStyle = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  };
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },

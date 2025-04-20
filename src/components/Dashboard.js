@@ -15,15 +15,22 @@ const Dashboard = () => {
   console.log('Dashboard events:', events);
 
   // Chart data
+  // Chart data with improved styling
   const chartData = {
-    labels: events.map(event => event.title || 'Untitled'),
+    labels: events.map(event => {
+      const title = event.title || 'Untitled';
+      // Truncate long titles for better display
+      return title.length > 15 ? title.substring(0, 15) + '...' : title;
+    }),
     datasets: [
       {
         label: 'Budget (₹)',
         data: events.map(event => Number(event.budget) || 0),
-        backgroundColor: 'rgba(129, 178, 154, 0.5)',
-        borderColor: 'rgba(129, 178, 154, 1)',
-        borderWidth: 1,
+        backgroundColor: 'rgba(53, 162, 235, 0.7)',
+        borderColor: 'rgba(53, 162, 235, 1)',
+        borderWidth: 2,
+        borderRadius: 5,
+        hoverBackgroundColor: 'rgba(53, 162, 235, 0.9)',
       },
       {
         label: 'Spent (₹)',
@@ -33,9 +40,11 @@ const Dashboard = () => {
             return vendor ? sum + Number(vendor.cost) : sum;
           }, 0)
         ),
-        backgroundColor: 'rgba(224, 122, 95, 0.5)',
-        borderColor: 'rgba(224, 122, 95, 1)',
-        borderWidth: 1,
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 2,
+        borderRadius: 5,
+        hoverBackgroundColor: 'rgba(255, 99, 132, 0.9)',
       },
     ],
   };
@@ -63,16 +72,21 @@ const Dashboard = () => {
       <h2>My Events Dashboard</h2>
       <Row className="mb-4">
         <Col>
-          <Button as={Link} to="/create" variant="primary" className="mb-3">
-            Create New Event
-          </Button>
+          <Link to="/create">
+            <Button variant="primary" className="mb-3">
+              Create New Event
+            </Button>
+          </Link>
         </Col>
       </Row>
       <Row className="mb-4">
         <Col>
           <Card>
-            <Card.Body>
-              <Bar data={chartData} options={chartOptions} />
+            <Card.Body style={{ height: '400px' }}> {/* Increased height by 10% from 300px */}
+              <Bar data={chartData} options={{
+                ...chartOptions,
+                maintainAspectRatio: false // Allow chart to fit container height
+              }} />
             </Card.Body>
           </Card>
         </Col>
@@ -117,47 +131,79 @@ const Dashboard = () => {
                         <strong>Date:</strong>{' '}
                         {event.date ? new Date(event.date).toLocaleDateString() : 'Not set'}
                       </Card.Text>
-                      <Button
-                        as={Link}
-                        to={`/event/${event.id}`}
-                        variant="primary"
-                        size="sm"
-                        className="me-2"
-                        disabled={!event.id}
-                        onClick={() => console.log('Navigating to details ID:', event.id)}
-                      >
-                        View Details
-                      </Button>
-                      <Button
-                        as={Link}
-                        to={`/event/${event.id}/edit`}
-                        variant="warning"
-                        size="sm"
-                        className="me-2"
-                        disabled={!event.id}
-                        onClick={() => console.log('Navigating to edit ID:', event.id)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        as={Link}
-                        to={`/event/${event.id}/vendors`}
-                        variant="success"
-                        size="sm"
-                        className="me-2"
-                        disabled={!event.id}
-                        onClick={() => console.log('Navigating to vendors ID:', event.id)}
-                      >
-                        Vendors
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(event.id)}
-                        disabled={!event.id}
-                      >
-                        Delete
-                      </Button>
+                      <div className="d-flex flex-wrap gap-2 mt-3">
+                        {event.id ? (
+                          <Link to={`/event/${event.id}`}>
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              onClick={() => console.log('Navigating to details ID:', event.id)}
+                            >
+                              View Details
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            disabled
+                            onClick={() => toast.error('Event ID is missing')}
+                          >
+                            View Details
+                          </Button>
+                        )}
+                        
+                        {event.id ? (
+                          <Link to={`/event/${event.id}/edit`}>
+                            <Button
+                              variant="warning"
+                              size="sm"
+                              onClick={() => console.log('Navigating to edit ID:', event.id)}
+                            >
+                              Edit
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant="warning"
+                            size="sm"
+                            disabled
+                            onClick={() => toast.error('Event ID is missing')}
+                          >
+                            Edit
+                          </Button>
+                        )}
+                        
+                        {event.id ? (
+                          <Link to={`/event/${event.id}/vendors`}>
+                            <Button
+                              variant="success"
+                              size="sm"
+                              onClick={() => console.log('Navigating to vendors ID:', event.id)}
+                            >
+                              Vendors
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button
+                            variant="success"
+                            size="sm"
+                            disabled
+                            onClick={() => toast.error('Event ID is missing')}
+                          >
+                            Vendors
+                          </Button>
+                        )}
+                        
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(event.id)}
+                          disabled={!event.id}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Card>
                 </motion.div>

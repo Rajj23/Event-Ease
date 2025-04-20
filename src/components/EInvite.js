@@ -13,7 +13,7 @@ const EInvite = () => {
     message: '',
     imageUrl: '',
   });
-  const [ setPreview] = useState(null);
+  const [setPreview] = useState(null);
 
   // const templates = [
   //   { id: 'classic', name: 'Classic', image: 'https://placehold.co/400x600?text=Classic+Invite' },
@@ -30,8 +30,40 @@ const EInvite = () => {
     const file = e.target.files[0];
     if (file && file.size <= 2 * 1024 * 1024) {
       const reader = new FileReader();
+      // Make card size smaller
+      document.querySelectorAll('.invite-preview').forEach(card => {
+        card.style.maxWidth = '50%'; // Reduced from 70% to 50%
+        card.style.margin = '0 auto';
+      });
+      
+      // Reduce the preview card image size by 30%
+      document.querySelectorAll('.invite-preview .card-img-top').forEach(img => {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+      });
+      
       reader.onloadend = () => {
         setInvite({ ...invite, imageUrl: reader.result });
+        
+        // Make the preview card responsive to the screen size
+        document.querySelectorAll('.invite-preview').forEach(card => {
+          card.style.maxWidth = '100%';
+          card.style.width = 'auto';
+          card.style.margin = '0 auto';
+        });
+        
+        // Make the image responsive within the card
+        document.querySelectorAll('.invite-preview .card-img-top').forEach(img => {
+          img.style.maxWidth = '100%';
+          img.style.height = 'auto';
+          img.style.objectFit = 'contain';
+        });
+        // Make the preview card responsive to screen size
+        document.querySelectorAll('.invite-preview').forEach(card => {
+          card.style.maxWidth = '100%';
+          card.style.width = 'auto';
+          card.style.height = 'auto';
+        });
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
@@ -47,6 +79,39 @@ const EInvite = () => {
     }
     // Mock save (store in localStorage or context later)
     toast.success('Invite saved! Ready to share.');
+  };
+  
+  // Add a share invite feature
+  const handleShareInvite = () => {
+    if (!selectedEvent || !invite.message) {
+      toast.error('Please complete your invite before sharing');
+      return;
+    }
+    
+    // Mock share functionality
+    toast.info('Share feature would open here with options for social media, email, etc.');
+    // In a real implementation, you could use the Web Share API or custom sharing options
+  };
+
+  // Add download invite feature
+  const handleDownload = () => {
+    if (!selectedEvent || !invite.message) {
+      toast.error('Please complete your invite first');
+      return;
+    }
+    
+    // This is a placeholder for actual download functionality
+    toast.success('Your invite would download as an image here');
+    // In a real implementation, you'd use html-to-image or similar library
+  };
+
+  // Add animation variants for template selection
+  const templateVariants = {
+    hover: {
+      scale: 1.05,
+      boxShadow: "0px 5px 10px rgba(0,0,0,0.2)",
+      transition: { duration: 0.3 }
+    }
   };
 
   const selectedEventData = events.find(e => e.id === selectedEvent);
@@ -109,34 +174,32 @@ const EInvite = () => {
           </Form>
         </Col>
         <Col md={6}>
-          <h4>Preview</h4>
-          <Card className="invite-preview">
-            <Card.Img
-              variant="top"
-              src={
-                invite.imageUrl ||
-                templates.find(t => t.id === invite.template)?.image ||
-                'https://placehold.co/400x600?text=Invite'
-              }
-              style={{ height: '300px', objectFit: 'cover' }}
-            />
-            <Card.Body>
-              <Card.Title>
-                {selectedEventData?.title || 'Your Event'}
-              </Card.Title>
-              <Card.Text>
-                {invite.message || 'Join us for our special day...'}
-                <br />
-                <strong>Date:</strong>{' '}
-                {selectedEventData?.date
-                  ? new Date(selectedEventData.date).toLocaleDateString()
-                  : 'TBD'}
-                <br />
-                <strong>Location:</strong>{' '}
-                {selectedEventData?.location || 'TBD'}
-              </Card.Text>
-            </Card.Body>
-          </Card>
+          <div className="preview-container">
+            <h4>Preview</h4>
+            {selectedEvent && (
+              <Card className="invite-preview">
+                <Card.Img 
+                  variant="top" 
+                  src={invite.imageUrl || templates.find(t => t.id === invite.template)?.image} 
+                  alt="Invitation Template" 
+                />
+                <Card.Body className="text-center">
+                  <h3>{selectedEventData?.title}</h3>
+                  <p className="invite-message">{invite.message}</p>
+                  <p><strong>Date:</strong> {selectedEventData?.date}</p>
+                  <p><strong>Location:</strong> {selectedEventData?.location}</p>
+                </Card.Body>
+              </Card>
+            )}
+            <div className="d-flex justify-content-center mt-3 gap-2">
+              <Button variant="outline-primary" onClick={handleShareInvite}>
+                Share Invite
+              </Button>
+              <Button variant="outline-success" onClick={handleDownload}>
+                Download
+              </Button>
+            </div>
+          </div>
         </Col>
       </Row>
     </motion.div>

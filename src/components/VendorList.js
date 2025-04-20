@@ -1,38 +1,42 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { EventContext } from '../EventContext';
-import { Card, Row, Col, Form, Button, Badge } from 'react-bootstrap';
+import { Card, Row, Col, Button, Form, Container } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import './VendorList.css';
 
 const VendorList = () => {
-  const { eventId } = useParams();
+  const { id: eventId } = useParams();
   const navigate = useNavigate();
   const { events, vendors, updateEvent } = useContext(EventContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [event, setEvent] = useState(null);
+  const [selectedVendors, setSelectedVendors] = useState([]);
+  const [selectedVendorType, setSelectedVendorType] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  console.log('VendorList ID:', eventId, 'Events:', events);
-  const event = events.find((e) => e.id === eventId);
-  const [selectedVendors, setSelectedVendors] = useState(event?.vendors || []);
-  const [filterType, setFilterType] = useState('');
+  // Log for debugging
+  console.log('VendorList component initialized');
+  console.log('EventId from URL:', eventId);
 
-  if (!event) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        Animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="container mt-4 text-center"
-      >
-        <h2>Event Not Found</h2>
-        <p>The event may have been deleted or the ID is invalid.</p>
-        <Button as={Link} to="/dashboard" variant="primary">
-          Back to Dashboard
-        </Button>
-      </motion.div>
-    );
-  }
+  useEffect(() => {
+    console.log('VendorList useEffect running');
+    
+    if (events.length > 0) {
+      // Convert both IDs to strings for reliable comparison
+      const foundEvent = events.find(e => String(e.id) === String(eventId));
+      console.log('Found event:', foundEvent);
+      
+      if (foundEvent) {
+        setEvent(foundEvent);
+        setSelectedVendors(foundEvent.vendors || []);
+      }
+    }
+    setIsLoading(false);
+  }, [events, eventId]);
 
+  // Define vendor types
   const vendorTypes = [
     'photographer',
     'caterer',
@@ -55,157 +59,267 @@ const VendorList = () => {
     'planner',
   ];
 
-  const filteredVendors = filterType
-    ? vendors.filter(
-        (vendor) =>
-          vendor.type === filterType &&
-          (!event.eventType || vendor.eventTypes.includes(event.eventType))
-      )
-    : vendors.filter(
-        (vendor) => !event.eventType || vendor.eventTypes.includes(event.eventType)
-      );
-
   const handleVendorToggle = (vendorId) => {
-    let updatedVendors;
-    if (selectedVendors.includes(vendorId)) {
-      updatedVendors = selectedVendors.filter((id) => id !== vendorId);
-    } else {
-      updatedVendors = [...selectedVendors, vendorId];
-    }
-
-    const totalCost = updatedVendors.reduce((sum, id) => {
-      const vendor = vendors.find((v) => v.id === id);
-      return vendor ? sum + Number(vendor.cost) : sum;
-    }, 0);
-
-    const budget = Number(event.budget);
-    if (budget > 0 && totalCost > budget) {
-      toast.error(`Vendor costs (₹${totalCost.toLocaleString('en-IN')}) exceed budget (₹${budget.toLocaleString('en-IN')})`);
-      return;
-    }
-
-    setSelectedVendors(updatedVendors);
+    setSelectedVendors(prev => {
+      if (prev.includes(vendorId)) {
+        return prev.filter(id => id !== vendorId);
+      } else {
+        return [...prev, vendorId];
+      }
+    });
   };
 
   const handleSave = () => {
-    const totalCost = selectedVendors.reduce((sum, id) => {
-      const vendor = vendors.find((v) => v.id === id);
-      return vendor ? sum + Number(vendor.cost) : sum;
-    }, 0);
-    const budget = Number(event.budget);
-    if (budget > 0 && totalCost > budget) {
-      toast.error(`Cannot save: Vendor costs (₹${totalCost.toLocaleString('en-IN')}) exceed budget (₹${budget.toLocaleString('en-IN')})`);
+    if (!event) {
+      toast.error('Cannot update: Event not found');
       return;
     }
-
-    const updatedEvent = { ...event, vendors: selectedVendors };
-    console.log('Saving vendors for event ID:', eventId, 'Event:', updatedEvent);
-    const success = updateEvent(updatedEvent);
-    if (success) {
-      toast.success('Vendors updated successfully');
-      navigate(`/event/${eventId}`);
-    } else {
-      toast.error('Failed to update vendors');
+    
+    const totalCost = selectedVendors.reduce((sum, id) => {
+      const vendor = vendors.find(v => v.id === id);
+      return vendor ? sum + Number(vendor.cost) : sum;
+    }, 0);
+    
+    const budget = Number(event.budget);
+    if (budget > 0 && totalCost > budget) {
+      toast.warning(`Selected vendors (₹${totalCost.toLocaleString('en-IN')}) exceed budget (₹${budget.toLocaleString('en-IN')})`);
     }
+    
+    const updatedEvent = {
+      ...event,
+      vendors: selectedVendors
+    };
+    
+    updateEvent(updatedEvent);
+    toast.success('Vendors updated successfully');
+    navigate(`/event/${eventId}`);
   };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="container mt-4 vendor-list"
-    >
-      <h2>Vendors for {event.title}</h2>
-      <p>
-        Budget: <Badge bg="primary">₹{Number(event.budget).toLocaleString('en-IN')}</Badge> | Current Cost:{' '}
-        <Badge bg="secondary">
-          ₹{
-            selectedVendors.reduce((sum, id) => {
-              const vendor = vendors.find((v) => v.id === id);
-              return vendor ? sum + Number(vendor.cost) : sum;
-            }, 0).toLocaleString('en-IN')
-          }
-        </Badge>
-      </p>
-      <Form.Group className="mb-3">
-        <Form.Label>Vendor Type</Form.Label>
-        <Form.Select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-        >
-          <option value="">All Types</option>
-          {vendorTypes.map((type) => (
-            <option key={type} value={type}>
-              {type.replace('_', ' ').charAt(0).toUpperCase() +
-                type.replace('_', ' ').slice(1)}
-            </option>
-          ))}
-        </Form.Select>
-      </Form.Group>
-      <Row>
-        {filteredVendors.length > 0 ? (
-          filteredVendors.map((vendor) => (
-            <Col md={4} key={vendor.id} className="mb-4">
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                  hover: { scale: 1.05 },
-                }}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                transition={{ duration: 0.4 }}
-              >
-                <Card>
-                  <Card.Img
-                    variant="top"
-                    src={
-                      vendor.imageUrl ||
-                      'https://placehold.co/400x250?text=Vendor+Image'
-                    }
-                    style={{ height: '150px', objectFit: 'cover' }}
-                  />
-                  <Card.Body>
-                    <Card.Title>{vendor.name}</Card.Title>
-                    <Card.Text>
-                      <strong>Type:</strong>{' '}
-                      {vendor.type.charAt(0).toUpperCase() + vendor.type.slice(1)}
-                      <br />
-                      <strong>Cost:</strong> ₹{vendor.cost.toLocaleString('en-IN')}
-                      <br />
-                      <strong>Location:</strong> {vendor.location}
-                    </Card.Text>
-                    <Form.Check
-                      type="checkbox"
-                      label="Select"
-                      checked={selectedVendors.includes(vendor.id)}
-                      onChange={() => handleVendorToggle(vendor.id)}
-                    />
-                  </Card.Body>
-                </Card>
-              </motion.div>
-            </Col>
-          ))
-        ) : (
-          <Col>
-            <p>No vendors available for this event type.</p>
-          </Col>
-        )}
-      </Row>
-      <Button variant="primary" onClick={handleSave} className="mt-3">
-        Save Vendors
-      </Button>
-      <Button
-        variant="secondary"
-        as={Link}
-        to={`/event/${eventId}`}
-        className="mt-3 ms-2"
+  // Filter vendors based on type and search term
+  const filteredVendors = vendors.filter(vendor => {
+    const matchesType = !selectedVendorType || vendor.type === selectedVendorType;
+    const matchesSearch = !searchTerm || 
+      vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vendor.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesEventType = !event?.eventType || vendor.eventTypes.includes(event.eventType);
+    
+    return matchesType && matchesSearch && matchesEventType;
+  });
+
+  // Calculate total cost
+  const totalCost = selectedVendors.reduce((sum, id) => {
+    const vendor = vendors.find(v => v.id === id);
+    return vendor ? sum + Number(vendor.cost) : sum;
+  }, 0);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="container mt-4 text-center"
       >
-        Cancel
-      </Button>
-    </motion.div>
+        <h2>Loading Vendors...</h2>
+        <div className="spinner-border text-primary mt-3" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Event not found state
+  if (!event) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="container mt-4 text-center"
+      >
+        <h2>Event Not Found</h2>
+        <p>The event may have been deleted or the ID is invalid.</p>
+        <Button as={Link} to="/dashboard" variant="primary">
+          Back to Dashboard
+        </Button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <Container className="mt-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2>Manage Vendors: {event.title}</h2>
+          <Button as={Link} to={`/event/${eventId}`} variant="outline-secondary">
+            <i className="fas fa-arrow-left me-2"></i>Back to Event
+          </Button>
+        </div>
+
+        <Row>
+          {/* Vendor List */}
+          <Col lg={8}>
+            <Card className="shadow-sm mb-4">
+              <Card.Body>
+                {/* Filter Controls */}
+                <Row className="mb-3">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label>Filter by Type</Form.Label>
+                      <Form.Select
+                        value={selectedVendorType}
+                        onChange={(e) => setSelectedVendorType(e.target.value)}
+                      >
+                        <option value="">All Types</option>
+                        {vendorTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type.replace('_', ' ').charAt(0).toUpperCase() + type.replace('_', ' ').slice(1)}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label>Search Vendors</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Search by name or location"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <h5 className="mb-3">Available Vendors</h5>
+                <div className="vendor-list" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                  {filteredVendors.length > 0 ? (
+                    filteredVendors.map((vendor) => (
+                      <motion.div
+                        key={vendor.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Card className="mb-3 vendor-card">
+                          <Card.Body className="p-0">
+                            <Row className="g-0">
+                              <Col xs={3} md={2}>
+                                <img
+                                  src={vendor.imageUrl || 'https://placehold.co/100x100?text=Vendor'}
+                                  alt={vendor.name}
+                                  className="img-fluid rounded-start"
+                                  style={{ height: '100%', objectFit: 'cover' }}
+                                />
+                              </Col>
+                              <Col xs={9} md={10}>
+                                <div className="d-flex justify-content-between align-items-center h-100 px-3 py-2">
+                                  <div>
+                                    <h5 className="mb-1">{vendor.name}</h5>
+                                    <p className="mb-1 text-muted">
+                                      <i className="fas fa-tag me-1"></i>
+                                      {vendor.type.charAt(0).toUpperCase() + vendor.type.slice(1)} | 
+                                      <i className="fas fa-map-marker-alt mx-1"></i>
+                                      {vendor.location}
+                                    </p>
+                                    <p className="mb-0" style={{ color: "#64B5AE" }}>
+                                      <strong>₹{vendor.cost.toLocaleString('en-IN')}</strong>
+                                    </p>
+                                  </div>
+                                  <Form.Check
+                                    type="checkbox"
+                                    id={`vendor-${vendor.id}`}
+                                    checked={selectedVendors.includes(vendor.id)}
+                                    onChange={() => handleVendorToggle(vendor.id)}
+                                    label="Select"
+                                    className="fs-5"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className="text-center py-5">
+                      <i className="fas fa-search fa-3x text-muted mb-3"></i>
+                      <h5>No vendors match your criteria</h5>
+                      <p className="text-muted">Try adjusting your filters</p>
+                    </div>
+                  )}
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          {/* Summary Panel */}
+          <Col lg={4}>
+            <Card className="shadow-sm sticky-top" style={{ top: '1rem', zIndex: 100 }}>
+              <Card.Body>
+                <h5 className="mb-3">Selected Vendors</h5>
+                <p className="mb-2">
+                  <strong>{selectedVendors.length}</strong> vendors selected
+                </p>
+                <div className="mb-3 pb-3 border-bottom">
+                  {selectedVendors.length > 0 ? (
+                    selectedVendors.map((id) => {
+                      const vendor = vendors.find(v => v.id === id);
+                      return vendor ? (
+                        <div key={id} className="d-flex justify-content-between align-items-center mb-2">
+                          <div>
+                            <span>{vendor.name}</span>
+                            <small className="d-block text-muted">{vendor.type}</small>
+                          </div>
+                          <div>
+                            <span className="me-2">₹{vendor.cost.toLocaleString('en-IN')}</span>
+                            <Button 
+                              size="sm" 
+                              variant="outline-danger" 
+                              onClick={() => handleVendorToggle(id)}
+                            >
+                              <i className="fas fa-times"></i>
+                            </Button>
+                          </div>
+                        </div>
+                      ) : null;
+                    })
+                  ) : (
+                    <p className="text-muted text-center py-3">No vendors selected</p>
+                  )}
+                </div>
+
+                <div className="d-flex justify-content-between mb-2">
+                  <span>Budget:</span>
+                  <span>₹{Number(event.budget || 0).toLocaleString('en-IN')}</span>
+                </div>
+                <div className="d-flex justify-content-between fw-bold mb-3">
+                  <span>Total Cost:</span>
+                  <span className={totalCost > Number(event.budget) ? 'text-danger' : 'text-success'}>
+                    ₹{totalCost.toLocaleString('en-IN')}
+                  </span>
+                </div>
+
+                <Button 
+                  onClick={handleSave} 
+                  className="w-100" 
+                  variant="primary"
+                  size="lg"
+                >
+                  Save Vendor Selection
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </motion.div>
+    </Container>
   );
 };
 

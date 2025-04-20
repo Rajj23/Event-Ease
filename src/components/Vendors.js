@@ -12,16 +12,29 @@ const Vendors = () => {
   const initialType = queryParams.get('type') || '';
   const [filterType, setFilterType] = useState(initialType);
 
-  const vendorTypes = [
-    'photographer',
-    'caterer',
-    'venue',
-    'event_planner',
-    'entertainment',
-    'decorator',
-    'av_tech',
-    'designer',
-  ];
+  // Extract unique vendor types from actual data
+  const vendorTypes = [...new Set(vendors.map(vendor => vendor.type))].sort();
+  
+  // Animation configurations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  // Handle empty state better
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // Simulate loading state for better UX
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredVendors = filterType
     ? vendors.filter((vendor) => vendor.type === filterType)

@@ -9,9 +9,30 @@ const Checklist = () => {
   const { events } = useContext(EventContext);
   const [selectedEvent, setSelectedEvent] = useState('');
   const [tasks, setTasks] = useState([
-    { id: 'task1', text: 'Book Venue', completed: false, dueDate: null },
-    { id: 'task2', text: 'Hire Photographer', completed: false, dueDate: null },
-    { id: 'task3', text: 'Send Invitations', completed: false, dueDate: null },
+    { 
+      id: 'task1', 
+      text: 'Book Venue', 
+      completed: false, 
+      dueDate: null, 
+      priority: 'high',
+      icon: '🏛️'
+    },
+    { 
+      id: 'task2', 
+      text: 'Hire Photographer', 
+      completed: false, 
+      dueDate: null,
+      priority: 'medium',
+      icon: '📸'
+    },
+    { 
+      id: 'task3', 
+      text: 'Send Invitations', 
+      completed: false, 
+      dueDate: null,
+      priority: 'low',
+      icon: '✉️'
+    },
   ]);
   const [newTask, setNewTask] = useState('');
   const [showShare, setShowShare] = useState(false);

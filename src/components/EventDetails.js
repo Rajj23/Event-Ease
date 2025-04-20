@@ -6,11 +6,13 @@ import { motion } from 'framer-motion';
 import './EventDetails.css';
 
 const EventDetails = () => {
-  const { eventId } = useParams();
+  // Fix: Extract 'id' parameter instead of 'eventId'
+  const { id: eventId } = useParams();
   const { events, vendors } = useContext(EventContext);
 
   console.log('EventDetails ID:', eventId, 'Events:', events);
-  const event = events.find((e) => e.id === eventId);
+  // Convert both IDs to strings for reliable comparison
+  const event = events.find((e) => String(e.id) === String(eventId));
 
   if (!event) {
     return (
@@ -22,6 +24,9 @@ const EventDetails = () => {
       >
         <h2>Event Not Found</h2>
         <p>The event may have been deleted or the ID is invalid.</p>
+        <p className="text-muted">ID: {eventId}</p>
+        <p className="text-muted">Available Events: {events.length}</p>
+        <p className="text-muted">Available IDs: {events.map(e => e.id).join(', ')}</p>
         <Button as={Link} to="/dashboard" variant="primary">
           Back to Dashboard
         </Button>
@@ -29,6 +34,7 @@ const EventDetails = () => {
     );
   }
 
+  // Rest of the component remains the same
   const totalSpent = (event.vendors || []).reduce((sum, vid) => {
     const vendor = vendors.find(v => v.id === vid);
     return vendor ? sum + Number(vendor.cost) : sum;

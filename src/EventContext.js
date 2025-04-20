@@ -36,7 +36,8 @@ export const EventProvider = ({ children }) => {
   }, [events]);
 
   const addEvent = (event) => {
-    const newId = crypto.randomUUID();
+    // Use the event's ID if provided, otherwise generate a new one
+    const newId = event.id || crypto.randomUUID();
     const newEvent = {
       ...event,
       id: newId,
