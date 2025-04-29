@@ -86,6 +86,16 @@ const EventDetails = () => {
                 <br />
                 <strong>Description:</strong>{' '}
                 {event.description || 'No description'}
+                {/* Donation Status */}
+                <br />
+                <strong>Food Donation:</strong>{' '}
+                {event.donateFoodToNGO ? (
+                  <span className="text-success">
+                    <i className="fas fa-check-circle me-1"></i> Will donate leftovers to NGO
+                  </span>
+                ) : (
+                  <span className="text-muted">No donation planned</span>
+                )}
               </Card.Text>
               <Button
                 as={Link}

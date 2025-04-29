@@ -20,6 +20,7 @@ const CreateEvent = () => {
     description: '',
     imageUrl: '',
     vendors: [],
+    donateFoodToNGO: false, // Add this new field
   });
   const [imagePreview, setImagePreview] = useState('');
   const [selectedVendorType, setSelectedVendorType] = useState('');
@@ -116,6 +117,12 @@ const CreateEvent = () => {
     setImagePreview('');
     navigate('/dashboard'); 
   };
+  
+  // Calculate the total cost of selected vendors
+  const totalCost = (formData.vendors || []).reduce((sum, id) => {
+    const vendor = vendors.find((v) => v.id === id);
+    return vendor ? sum + Number(vendor.cost) : sum;
+  }, 0);
 
   const filteredVendors = selectedVendorType
     ? vendors.filter(
@@ -244,6 +251,62 @@ const CreateEvent = () => {
                     className="modern-input"
                   />
                 </Form.Group>
+
+                <Form.Group className="mb-4">
+                  <div className="border rounded p-3 bg-light">
+                    <div className="d-flex align-items-center mb-3">
+                      <div className="me-3">
+                        <i className="fas fa-hand-holding-heart text-success fa-2x"></i>
+                      </div>
+                      <div className="flex-grow-1">
+                        <h5 className="mb-1">Give Back to Community</h5>
+                        <p className="mb-0 text-muted small">Would you like to donate leftover food from your event to a local NGO?</p>
+                      </div>
+                    </div>
+                    
+                    <div className="d-flex justify-content-center mt-2">
+                      <Button
+                        type="button"
+                        variant={formData.donateFoodToNGO ? "success" : "outline-success"}
+                        className="me-2 px-4"
+                        onClick={() => setFormData({...formData, donateFoodToNGO: true})}
+                      >
+                        <i className="fas fa-check-circle me-1"></i> Yes, I'll Donate
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={!formData.donateFoodToNGO ? "secondary" : "outline-secondary"}
+                        className="px-4"
+                        onClick={() => setFormData({...formData, donateFoodToNGO: false})}
+                      >
+                        <i className="fas fa-times-circle me-1"></i> No, Thanks
+                      </Button>
+                    </div>
+                    
+                    {formData.donateFoodToNGO && (
+                      <div className="mt-3">
+                        <div className="text-center text-success small mb-2">
+                          <i className="fas fa-heart me-1"></i> Thank you for choosing to donate! You're making a difference.
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <Form.Check 
+                            type="checkbox" 
+                            id="remember-donation" 
+                            label="Remember my choice for future events" 
+                            className="small text-muted"
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                localStorage.setItem('defaultDonate', formData.donateFoodToNGO.toString());
+                              } else {
+                                localStorage.removeItem('defaultDonate');
+                              }
+                            }} 
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Form.Group>
                 
                 <Form.Group className="mb-4">
                   <Form.Label className="text-muted small">Event Image</Form.Label>
@@ -260,33 +323,68 @@ const CreateEvent = () => {
                         />
                       </div>
                     ) : (
-                      <div className="image-preview-container" style={{ width: '100%', height: '250px', position: 'relative', overflow: 'hidden' }}>
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="image-preview"
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-                        />
-                        <button 
-                          type="button" 
-                          className="remove-image-btn"
-                          onClick={() => {
-                            setImagePreview('');
-                            setFormData({...formData, imageUrl: ''});
-                          }}
-                        >
-                          <i className="fas fa-times"></i>
-                        </button>
-                      </div>
+                      <div className="image-preview-container" style={{ 
+  width: '100%', 
+  height: '250px', 
+  position: 'relative', 
+  overflow: 'hidden',
+  borderRadius: '8px',
+  boxShadow: '0 3px 10px rgba(0,0,0,0.1)'
+}}>
+  <img
+    src={imagePreview}
+    alt="Preview"
+    className="image-preview"
+    style={{ 
+      width: '100%', 
+      height: '100%', 
+      objectFit: 'cover', 
+      objectPosition: 'center',
+      transition: 'transform 0.3s ease'
+    }}
+    onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
+    onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+  />
+  <div className="image-overlay" style={{
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+    padding: '15px 10px 10px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }}>
+    <span className="text-white">Event Image Preview</span>
+    <button 
+      type="button" 
+      className="btn btn-sm btn-outline-light"
+      onClick={() => {
+        setImagePreview('');
+        setFormData({...formData, imageUrl: ''});
+      }}
+    >
+      <i className="fas fa-times me-1"></i> Remove
+    </button>
+  </div>
+</div>
                     )}
                   </div>
                 </Form.Group>
               </Col>
               
               <Col md={6} className="ps-md-4 mt-4 mt-md-0">
-                <div className="form-section-header mb-3">
-                  <span className="badge me-2" style={{ backgroundColor: "#64B5AE" }}>2</span>
-                  <span className="fw-bold fs-5">Choose Vendors</span>
+                <div className="form-section-header mb-3 d-flex justify-content-between align-items-center">
+                  <div>
+                    <span className="badge me-2" style={{ backgroundColor: "#64B5AE" }}>2</span>
+                    <span className="fw-bold fs-5">Choose Vendors</span>
+                  </div>
+                  {formData.vendors.length > 0 && (
+                    <span className="badge rounded-pill" style={{ backgroundColor: "#64B5AE" }}>
+                      {formData.vendors.length} selected
+                    </span>
+                  )}
                 </div>
                 
                 <Form.Group className="mb-3">
@@ -360,7 +458,57 @@ const CreateEvent = () => {
                     )}
                   </div>
                 </div>
-                
+
+                <div className="cost-summary mt-4 mb-3 p-3 border rounded bg-white shadow-sm">
+                  <h5 className="mb-3">
+                    <i className="fas fa-calculator me-2" style={{ color: "#64B5AE" }}></i>
+                    Budget Summary
+                  </h5>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Total Budget:</span>
+                    <span className="fw-bold">₹{Number(formData.budget || 0).toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Vendor Total:</span>
+                    <span className="fw-bold" style={{ color: totalCost > Number(formData.budget) && formData.budget > 0 ? "#dc3545" : "#198754" }}>
+                      ₹{totalCost.toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <span>Remaining:</span>
+                    <span className={Number(formData.budget) - totalCost < 0 && formData.bbudget > 0 ? "text-danger fw-bold" : "text-success fw-bold"}>
+                      ₹{(Number(formData.budget || 0) - totalCost).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                {formData.budget && (
+  <div className="mt-1">
+    <div className="progress" style={{ height: '8px' }}>
+      <div 
+        className="progress-bar" 
+        role="progressbar"
+        style={{ 
+          width: `${Math.min(totalCost / Number(formData.budget) * 100, 100)}%`,
+          backgroundColor: totalCost / Number(formData.budget) > 0.9 ? 
+            "#dc3545" : totalCost / Number(formData.budget) > 0.7 ? 
+            "#ffc107" : "#64B5AE"
+        }}
+        aria-valuenow={totalCost} 
+        aria-valuemin="0" 
+        aria-valuemax={formData.budget}
+      ></div>
+    </div>
+    <div className="d-flex justify-content-between mt-1">
+      <span className="text-muted small">₹0</span>
+      <span className={`small ${totalCost > Number(formData.budget) ? 'text-danger' : 'text-muted'}`}>
+        {totalCost > Number(formData.budget) ? 'Over budget!' : `${Math.round(totalCost / Number(formData.budget) * 100)}% used`}
+      </span>
+      <span className="text-muted small">₹{Number(formData.budget).toLocaleString('en-IN')}</span>
+    </div>
+  </div>
+)}
+
                 <div className="text-center mt-5">
                   <Button 
                     type="submit" 

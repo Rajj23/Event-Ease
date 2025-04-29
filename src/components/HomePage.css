@@ -1,3 +1,14 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Other existing styles... */
+
 .homepage {
   background-color: var(--background);
 }
@@ -48,4 +59,16 @@
   --secondary: #2e2e2e;    /* Deep gray for headings and text */
   --background: #f3e5ab;   /* Light yellow-beige background */
   --accent: #ffffff;       /* For cards, modals, etc. */
+}
+
+/* Add this to your CSS file */
+.blurred-img {
+  filter: blur(10px);
+  transform: scale(1.1);
+  transition: filter 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.blurred-img.loaded {
+  filter: blur(0);
+  transform: scale(1);
 }
