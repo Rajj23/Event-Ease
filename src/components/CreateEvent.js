@@ -229,7 +229,7 @@ const CreateEvent = () => {
                       name="location"
                       value={formData.location}
                       onChange={handleChange}
-                      placeholder="Punjab Only"
+                      placeholder="Amritsar, Ludhiana, Patiala, Jalandhar, Chandigarh, etc."
                       className="modern-input ps-4"
                     />
                   </div>
