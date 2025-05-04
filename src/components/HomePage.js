@@ -179,7 +179,7 @@ const HomePage = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            Your Event, Our Ease
+            Your Vision, Our Expertise
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
