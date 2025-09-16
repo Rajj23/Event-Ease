@@ -179,7 +179,7 @@ const HomePage = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            Your Vision, Our Expertise
+            Becuase Moments Deserve Magic
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
@@ -768,9 +768,9 @@ const HomePage = () => {
             </motion.h2>
             <Row>
               {[
-                { name: 'Priya Sharma', role: 'Birthday Celebration', quote: 'EventEase made planning my daughter\'s birthday so simple! The vendors were excellent and the budget tracking was incredibly helpful.' },
+                { name: 'Priya Sharma', role: 'Birthday Celebration', quote: 'Blissful event made planning my daughter\'s birthday so simple! The vendors were excellent and the budget tracking was incredibly helpful.' },
                 { name: 'Rahul Verma', role: 'Corporate Event Manager', quote: 'As someone who organizes conferences regularly, this platform has saved me countless hours of work. The vendor management tools are top-notch.' },
-                { name: 'Arshita Thakur', role: 'Wedding Planner', quote: 'I\'ve planned several weddings through EventEase and the food donation option is such a thoughtful addition. My clients love the social responsibility aspect.' }
+                { name: 'Arshita Thakur', role: 'Wedding Planner', quote: 'I\'ve planned several weddings through Blissful event and the food donation option is such a thoughtful addition. My clients love the social responsibility aspect.' }
               ].map((testimonial, index) => (
                 <Col md={4} key={index} className="mb-4">
                   <motion.div
@@ -817,17 +817,17 @@ const HomePage = () => {
           <Container>
             <Row>
               <Col md={4}>
-                <h5>EventEase - Your Personal Event Planner</h5>
+                <h5>Blissful event - Your Personal Event Planner</h5>
                 <p>Plan your event with us</p>
                 <p>
-                  EventEase is your go-to event planning website where you can find top vendors and
+                  Blissful event is your go-to event planning website where you can find top vendors and
                   tools for every type of celebration. Whether it's a wedding or a birthday bash, we've got you!
                 </p>
               </Col>
               <Col md={3}>
                 <h5>Contact Us</h5>
-                <p><strong>For Vendors:</strong><br /> vendors@eventease.com<br /> 0124-6812346</p>
-                <p><strong>For Users:</strong><br /> info@eventease.com<br /> 0124-6812345</p>
+                <p><strong>For Vendors:</strong><br /> vendors@blissfulevent.com<br /> 0124-6812346</p>
+                <p><strong>For Users:</strong><br /> info@blissfulevent.com<br /> 0124-6812345</p>
               </Col>
               <Col md={2}>
                 <h5>Follow Us</h5>
@@ -850,7 +850,7 @@ const HomePage = () => {
               </Col>
             </Row>
             <hr />
-            <p className="text-center copyright">© {new Date().getFullYear()} EventEase. All rights reserved.</p>
+            <p className="text-center copyright">© {new Date().getFullYear()} Blissful event. All rights reserved.</p>
           </Container>
         </footer>
 

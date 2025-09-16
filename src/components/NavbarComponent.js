@@ -23,11 +23,11 @@ const NavbarComponent = () => {
           <Navbar.Brand as={NavLink} to="/">
             {/* Logo Image */}
             <img
-              src="/assets/logo.jpeg" // Path to your logo
-              alt="Event Ease Logo"
-              style={{ height: '45px', marginRight: '15px' }} // Adjust size and margin as needed
+              src="/assets/Blissful.jpeg" // Path to your logo
+              alt="Blissful Event Logo"
+              style={{ height: '60px', width: "65px", marginRight: '5px' }} // Adjust size and margin as needed
             />
-            Event Ease
+            Blissful Event
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
