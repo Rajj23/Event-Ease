@@ -179,7 +179,7 @@ const HomePage = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            Becuase Moments Deserve Magic
+            Because Moments Deserve Magic
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
