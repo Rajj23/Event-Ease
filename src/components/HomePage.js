@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { EventContext } from '../EventContext';
 import { Link } from 'react-router-dom';
 import GurupurabOffer from './GurupurabOffer';
+import './ScrollingTicker.css';
 import { Button, Card, Row, Col, Carousel, Container, Form } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
 import { inspirationEvents } from '../inspirationEvents';
@@ -60,6 +61,15 @@ const HomePage = () => {
     'av_tech',
     'designer',
   ];
+
+  const people = [
+  { name: 'Shreya Jaiswal', imgSrc: '/assets/founder/Picture1.jpg' },
+  { name: 'Mehakpreet Kaur', imgSrc: '/assets/founder/Picture2.jpg' },
+  { name: 'Anam Hasan', imgSrc: '/assets/founder/Picture3.jpg' },
+  { name: 'Palroop Kaur', imgSrc: '/assets/founder/Picture4.jpg' },
+  { name: 'Simran Kumari', imgSrc: '/assets/founder/Picture5.jpg' },
+  { name: 'Moline', imgSrc: '/assets/founder/Picture6.jpg' }
+];
 
   const eventTypes = ['wedding', 'sangeet', 'engagement', 'birthday', 'conference'];
 
@@ -180,7 +190,7 @@ const HomePage = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          Becuase Moments Deserve Magic
+          Because Moments Deserve Magic
         </motion.h1>
         <motion.p
           initial={{ y: 20, opacity: 0 }}
@@ -769,60 +779,51 @@ const HomePage = () => {
           >
             Founder
           </motion.h2>
-          <Row className="justify-content-center">
-            {[
-              {
-                name: 'Shreya Jaiswal',
-                imgSrc: '/assets/founder/Picture1.jpg' // Using 100px image
-              },
-              {
-                name: 'Mehakpreet Kaur',
-                imgSrc: '/assets/founder/Picture2.jpg'
-              },
-              {
-                name: 'Anam Hasan',
-                imgSrc: '/assets/founder/Picture3.jpg'
-              },
-              {
-                name: 'Palroop Kaur',
-                imgSrc: '/assets/founder/Picture4.jpg'
-              },
-              {
-                name: 'Simran Kumari',
-                imgSrc: '/assets/founder/Picture5.jpg'
-              }
-            ].map((person, index) => (
-              // Changed Col size to 'md={3}' and 'sm={6}' to fit 4 in a row on medium screens
-              // and 2 on small screens. 'text-center' will center the content.
-              <Col md={3} sm={6} key={index} className="mb-4 text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {/* Card is simplified. 'p-3' adds padding. */}
-                  <Card className="h-100 border-0 shadow-sm p-3">
-                    <Card.Body>
-                      {/* 1. The Photo */}
-                      <img
-                        src={person.imgSrc}
-                        alt={person.name}
-                        className="rounded-circle mb-3" // 'mb-3' adds space below the image
-                        style={{
-                          width: '100px',
-                          height: '100px',
-                          objectFit: 'cover'
-                        }}
-                      />
-                      {/* 2. The Name */}
-                      <h6 className="mb-0">{person.name}</h6>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-            ))}
-          </Row>
+          <div className="ticker-wrapper">
+  <div className="ticker-track">
+    {/* First set of items */}
+    {people.map((person, index) => (
+      <div className="ticker-item" key={`a-${index}`}>
+        <Card className="h-100 border-0 shadow-sm p-3 text-center">
+          <Card.Body>
+            <img
+              src={person.imgSrc}
+              alt={person.name}
+              className="rounded-circle mb-3"
+              style={{
+                width: '100px',
+                height: '100px',
+                objectFit: 'cover'
+              }}
+            />
+            <h6 className="mb-0">{person.name}</h6>
+          </Card.Body>
+        </Card>
+      </div>
+    ))}
+    
+    {/* Duplicated set of items for a seamless loop */}
+    {people.map((person, index) => (
+      <div className="ticker-item" key={`b-${index}`}>
+        <Card className="h-100 border-0 shadow-sm p-3 text-center">
+          <Card.Body>
+            <img
+              src={person.imgSrc}
+              alt={person.name}
+              className="rounded-circle mb-3"
+              style={{
+                width: '100px',
+                height: '100px',
+                objectFit: 'cover'
+              }}
+            />
+            <h6 className="mb-0">{person.name}</h6>
+          </Card.Body>
+        </Card>
+      </div>
+    ))}
+  </div>
+</div>
         </Container>
       </motion.section>
 

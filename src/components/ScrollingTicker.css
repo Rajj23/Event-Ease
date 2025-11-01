@@ -1,0 +1,57 @@
+/* Defines the scrolling animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Moves the track to the left by the width of *one* full set of items */
+    transform: translateX(-50%);
+  }
+}
+
+/* * 1. The Wrapper (The "Viewport") 
+ * Hides the overflow
+ */
+.ticker-wrapper {
+  width: 100%;
+  overflow: hidden; /* This is the magic! Hides the scrolling part */
+  padding: 1rem 0;
+}
+
+/* * 2. The Track 
+ * Holds both sets of items (width is 200%) and animates
+ */
+.ticker-track {
+  /* * Width is 200% because it holds two sets of items (5 items * 2 = 10 items)
+   * Each item is 20% wide (100% / 5 items)
+   * Total width = 10 items * 20% = 200%
+   */
+  width: 200%;
+  display: flex;
+  
+  /* * 'scroll' is the animation name
+   * '30s' is the duration (faster = smaller number, e.g., 15s)
+   * 'linear' keeps the speed constant
+   * 'infinite' makes it loop forever
+  */
+  animation: scroll 30s linear infinite;
+  will-change: transform; /* Helps with animation performance */
+}
+
+/* Optional: Pauses the animation on hover */
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* * 3. The Item
+ * Defines the width of a single card
+ */
+.ticker-item {
+  /* Each item gets 1/5th of the *visible* area */
+  /* (100% / 5 items) = 20% */
+  /* Since the track is 200% wide, 10% of 200% = 20% of the wrapper */
+  flex-basis: 10%; 
+  flex-shrink: 0;
+  padding: 0 0.75rem; /* Adds space *between* the cards */
+  box-sizing: border-box; /* Ensures padding doesn't break the layout */
+}
