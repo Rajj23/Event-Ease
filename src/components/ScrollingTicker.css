@@ -1,57 +1,53 @@
-/* Defines the scrolling animation */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    /* Moves the track to the left by the width of *one* full set of items */
-    transform: translateX(-50%);
-  }
-}
-
-/* * 1. The Wrapper (The "Viewport") 
- * Hides the overflow
+/*
+ * 1. The Wrapper (The "Viewport")
+ * This is the magic. 'overflow-x: auto' adds a horizontal
+ * scrollbar *only if* the content inside is wider than the wrapper.
  */
-.ticker-wrapper {
+.scroll-wrapper {
+  overflow-x: auto; /* Show scrollbar if needed */
+  overflow-y: hidden; /* Hide vertical scrollbar */
   width: 100%;
-  overflow: hidden; /* This is the magic! Hides the scrolling part */
-  padding: 1rem 0;
+  padding: 1rem 0.5rem; /* Give it some vertical breathing room */
 }
 
-/* * 2. The Track 
- * Holds both sets of items (width is 200%) and animates
+/*
+ * 2. The Container
+ * We use 'display: flex' to line up the items
+ * and 'width: max-content' to make the container as wide
+ * as all the items, forcing the wrapper to scroll.
  */
-.ticker-track {
-  /* * Width is 200% because it holds two sets of items (5 items * 2 = 10 items)
-   * Each item is 20% wide (100% / 5 items)
-   * Total width = 10 items * 20% = 200%
-   */
-  width: 200%;
+.scroll-container {
   display: flex;
-  
-  /* * 'scroll' is the animation name
-   * '30s' is the duration (faster = smaller number, e.g., 15s)
-   * 'linear' keeps the speed constant
-   * 'infinite' makes it loop forever
-  */
-  animation: scroll 30s linear infinite;
-  will-change: transform; /* Helps with animation performance */
+  width: max-content; /* Make container as wide as all items */
 }
 
-/* Optional: Pauses the animation on hover */
-.ticker-track:hover {
-  animation-play-state: paused;
-}
-
-/* * 3. The Item
- * Defines the width of a single card
+/*
+ * 3. The Item
+ * 'flex: 0 0 auto' tells the item not to grow or shrink.
+ * We set a 'min-width' so the cards have a consistent size.
  */
-.ticker-item {
-  /* Each item gets 1/5th of the *visible* area */
-  /* (100% / 5 items) = 20% */
-  /* Since the track is 200% wide, 10% of 200% = 20% of the wrapper */
-  flex-basis: 10%; 
-  flex-shrink: 0;
-  padding: 0 0.75rem; /* Adds space *between* the cards */
-  box-sizing: border-box; /* Ensures padding doesn't break the layout */
+.scroll-item {
+  flex: 0 0 auto; /* Don't grow, don't shrink, be your auto width */
+  min-width: 180px; /* Give cards a minimum width */
+  padding: 0 0.75rem; /* Space *between* the cards */
+  box-sizing: border-box;
+}
+
+/* --- Optional: Make the scrollbar look nicer --- */
+.scroll-wrapper::-webkit-scrollbar {
+  height: 8px; /* Height of the scrollbar */
+}
+
+.scroll-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 4px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc; /* Color of the handle */
+  border-radius: 4px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #aaa; /* Color of the handle on hover */
 }

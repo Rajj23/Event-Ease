@@ -63,13 +63,13 @@ const HomePage = () => {
   ];
 
   const people = [
-  { name: 'Shreya Jaiswal', imgSrc: '/assets/founder/Picture1.jpg' },
-  { name: 'Mehakpreet Kaur', imgSrc: '/assets/founder/Picture2.jpg' },
-  { name: 'Anam Hasan', imgSrc: '/assets/founder/Picture3.jpg' },
-  { name: 'Palroop Kaur', imgSrc: '/assets/founder/Picture4.jpg' },
-  { name: 'Simran Kumari', imgSrc: '/assets/founder/Picture5.jpg' },
-  { name: 'Moline', imgSrc: '/assets/founder/Picture6.jpg' }
-];
+    { name: 'Shreya Jaiswal', imgSrc: '/assets/founder/Picture1.jpg' },
+    { name: 'Mehakpreet Kaur', imgSrc: '/assets/founder/Picture2.jpg' },
+    { name: 'Anam Hasan', imgSrc: '/assets/founder/Picture3.jpg' },
+    { name: 'Palroop Kaur', imgSrc: '/assets/founder/Picture4.jpg' },
+    { name: 'Simran Kumari', imgSrc: '/assets/founder/Picture5.jpg' },
+    { name: 'Moline', imgSrc: '/assets/founder/Picture6.jpg ' }
+  ];
 
   const eventTypes = ['wedding', 'sangeet', 'engagement', 'birthday', 'conference'];
 
@@ -209,7 +209,7 @@ const HomePage = () => {
           </Button>
         </motion.div>
       </motion.section>
-      
+
 
       {/* Search Section */}
       <motion.section
@@ -779,51 +779,30 @@ const HomePage = () => {
           >
             Founder
           </motion.h2>
-          <div className="ticker-wrapper">
-  <div className="ticker-track">
-    {/* First set of items */}
-    {people.map((person, index) => (
-      <div className="ticker-item" key={`a-${index}`}>
-        <Card className="h-100 border-0 shadow-sm p-3 text-center">
-          <Card.Body>
-            <img
-              src={person.imgSrc}
-              alt={person.name}
-              className="rounded-circle mb-3"
-              style={{
-                width: '100px',
-                height: '100px',
-                objectFit: 'cover'
-              }}
-            />
-            <h6 className="mb-0">{person.name}</h6>
-          </Card.Body>
-        </Card>
-      </div>
-    ))}
-    
-    {/* Duplicated set of items for a seamless loop */}
-    {people.map((person, index) => (
-      <div className="ticker-item" key={`b-${index}`}>
-        <Card className="h-100 border-0 shadow-sm p-3 text-center">
-          <Card.Body>
-            <img
-              src={person.imgSrc}
-              alt={person.name}
-              className="rounded-circle mb-3"
-              style={{
-                width: '100px',
-                height: '100px',
-                objectFit: 'cover'
-              }}
-            />
-            <h6 className="mb-0">{person.name}</h6>
-          </Card.Body>
-        </Card>
-      </div>
-    ))}
-  </div>
-</div>
+          <div className="scroll-wrapper">
+            <div className="scroll-container">
+              {/* We only map ONCE now */}
+              {people.map((person, index) => (
+                <div className="scroll-item" key={index}>
+                  <Card className="h-100 border-0 shadow-sm p-3 text-center">
+                    <Card.Body>
+                      <img
+                        src={person.imgSrc}
+                        alt={person.name}
+                        className="rounded-circle mb-3"
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          objectFit: 'cover'
+                        }}
+                      />
+                      <h6 className="mb-0">{person.name}</h6>
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
         </Container>
       </motion.section>
 
