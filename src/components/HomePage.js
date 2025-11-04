@@ -68,7 +68,7 @@ const HomePage = () => {
     { name: 'Anam Hasan', imgSrc: '/assets/founder/Picture3.jpg' },
     { name: 'Palroop Kaur', imgSrc: '/assets/founder/Picture4.jpg' },
     { name: 'Simran Kumari', imgSrc: '/assets/founder/Picture5.jpg' },
-    { name: 'Moline', imgSrc: '/assets/founder/Picture6.jpg ' }
+    { name: 'Mabandhla Moline', imgSrc: '/assets/founder/Picture6.jpg ' }
   ];
 
   const eventTypes = ['wedding', 'sangeet', 'engagement', 'birthday', 'conference'];

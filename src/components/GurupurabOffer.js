@@ -39,7 +39,7 @@ function GurupurabOffer() {
                             </p>
                             {/* FURTHER REDUCED font size from 'display-5' to 'display-6' */}
                             <h2 className="display-6 fw-bolder text-danger" style={{ textShadow: 'none' }}>
-                                15% OFF
+                                5% OFF
                             </h2>
                             <p style={{ fontSize: '0.95rem' }}>on all event packages!</p>
 
