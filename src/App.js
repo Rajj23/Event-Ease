@@ -10,6 +10,7 @@ import Inspiration from './components/Inspiration';
 import InspirationDetails from './components/InspirationDetails';
 import Dashboard from './components/Dashboard';
 import EditEvent from './components/EditEvent';
+import OffersPage from './components/OffersPage';
 import EventDetails from './components/EventDetails';
 import Checklist from './components/Checklist';
 import VendorRegister from './components/VendorRegister';
@@ -30,6 +31,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/create" element={<CreateEvent />} />
+              <Route path="/offers" element={<OffersPage />} />
               <Route path="/vendors" element={<Vendors />} />
               <Route path="/event/:id/vendors" element={<VendorList />} />
               <Route path="/inspiration" element={<Inspiration />} />

@@ -826,6 +826,7 @@ const HomePage = () => {
             <Col md={2}>
               <h5>Follow Us</h5>
               <p><a href="https://www.instagram.com/blissful_events___?igsh=bzFkNXl1ODJibzlm">Instagram</a></p>
+              <p><a href="https://www.facebook.com/share/p/19xSMBdJt5/">Facebook</a></p>
               <p><a href="http://www.linkedin.com/in/blissful-events-508745384">LinkedIn</a></p>
               <p><a href="https://youtube.com/@blissfulevents06?si=9lsSYWL-kjgI79DJ">Youtube</a></p>
               <p><a href="https://eventplanningmadeeasybyblissfulevents.blogspot.com/2025/09/event-planning-made-easy-complete-event.html">Blog</a></p>

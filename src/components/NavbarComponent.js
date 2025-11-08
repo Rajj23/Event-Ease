@@ -38,6 +38,9 @@ const NavbarComponent = () => {
               <Nav.Link as={NavLink} to="/dashboard">
                 Dashboard
               </Nav.Link>
+              <Nav.Link as={NavLink} to="/offers">
+                Offers
+              </Nav.Link>
               <Nav.Link as={NavLink} to="/create">
                 Create Event
               </Nav.Link>
