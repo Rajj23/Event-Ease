@@ -168,7 +168,7 @@ function OffersPage() {
                     For Family Functions & Birthdays
                   </Card.Subtitle>
                   <Card.Text className="flex-grow-1">
-                    Book any decor package for family functions or birthdays and get an instant <strong>500 discount</strong>.
+                    Book any decor package for family functions or birthdays and get an instant <strong>₹500 discount</strong>.
                   </Card.Text>
                   <Button 
                     variant="light" 
